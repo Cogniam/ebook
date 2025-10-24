@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ngủ ít vẫn khỏe - Sách điện tử</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    /* ====== BIẾN MÀU SẮC VÀ HIỆU ỨNG ====== */
+    :root {
+      --primary-color: #5d7b6f;
+      --secondary-color: #85b082;
+      --accent-color: #e8a034f5;
+      --background-color: #f5f3f0;
+      --text-color: #2c3e50;
+      --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    /* ====== RESET VÀ CƠ BẢN ====== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Times New Roman', Times, serif;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      overflow-x: hidden;
+      transition: var(--transition);
+    }
+
+    /* ====== LAYOUT CHÍNH ====== */
+    .app-container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      position: relative;
+    }
+
+    /* ====== THANH TRÊN CÙNG ====== */
+    .topbar {
+      background: linear-gradient(135deg, #5d7b6f 0%, #85b082 100%);
+      color: white;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      position: relative;
+    }
+
+    .topbar::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(135deg, #5d7b6f 0%, #85b082 100%);
+      z-index: 1001;
+    }
+
+    .book-title {
+      font-size: 1.3rem;
+      color: white;
+      margin-left: 15px;
+      font-weight: 400;
+      font-style: italic;
+    }
+
+    /* ====== THANH CÔNG CỤ BÊN PHẢI ====== */
+    .toolbar {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .tool-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .tool-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    /* ====== SIDEBAR MỤC LỤC ====== */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -380px;
+      width: 380px;
+      height: 100vh;
+      background: white;
+      box-shadow: 5px 0 30px rgba(0, 0, 0, 0.08);
+      transition: var(--transition);
+      z-index: 1002;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar.active {
+      left: 0;
+    }
+
+    .sidebar-header {
+    padding: 25px 30px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+.sidebar-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.sidebar-header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+    .sidebar-header h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      position: relative;
+      z-index: 1;
+      margin-left: 20px;
+      text-transform:uppercase;
+    }
+.sidebar-content {
+      flex: 1;
+      padding: 25px 30px;
+      overflow-y: auto;
+    }
+    .control-btn {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+    z-index: 100;
+    }
+
+    .control-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+
+    .sidebar ul {
+      list-style: none;
+    }
+
+    .sidebar li {
+      margin-bottom: 10px;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 12px 15px;
+      color: var(--text-color);
+      text-decoration: none;
+      border-radius: 8px;
+      transition: var(--transition);
+      font-weight: 500;
+    }
+
+    .sidebar a:hover {
+      background: rgba(93, 138, 127, 0.1);
+      color: var(--primary-color);
+    }
+
+    .special-chapter > a,
+    .special-chapter .caret-item > a,
+    .special-chapter .caret-only {
+        color: var(--primary-color) !important;
+        font-weight: 700 !important;
+    }
+
+    .special-chapter > a:hover,
+    .special-chapter .caret-item > a:hover,
+    .special-chapter .caret-only:hover {
+        background: rgba(93, 123, 111, 0.2) !important;
+        color: var(--primary-color) !important;
+        transform: translateX(5px);
+    }
+
+    .special-chapter .nested a {
+        color: var(--text-color) !important;
+        font-weight: 500 !important;
+        background: transparent !important;
+        border-left: none !important;
+        transform: none !important;
+    }
+
+    .special-chapter .nested a:hover {
+        background: rgba(93, 138, 127, 0.1) !important;
+        color: var(--primary-color) !important;
+    }
+
+    .special-chapter .caret::before {
+        color: var(--primary-color) !important;
+    }
+
+    .caret-item {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      padding-left: 14px;
+    }
+
+    .caret {
+      cursor: pointer;
+      user-select: none;
+      margin-right: 8px;
+      transition: var(--transition);
+      
+    }
+
+    .caret::before {
+      content: "▶";
+      color: var(--primary-color);
+      display: inline-block;
+    }
+
+    .caret-down::before {
+      transform: rotate(90deg);
+    }
+
+    .nested {
+      display: none;
+      margin-left: 48px;
+    }
+
+    .nested.active {
+      display: block;
+    }
+
+    .caret-only {
+      cursor: pointer;
+      padding: 12px 15px;
+      border-radius: 8px;
+      transition: var(--transition);
+      font-weight: 600;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+    }
+
+    .caret-only:hover {
+      background: rgba(93, 138, 127, 0.1);
+      color: var(--primary-color);
+    }
+
+    /* ====== NỘI DUNG CHÍNH ====== */
+    .content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 10px 25px 10px 25px;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .content-frame-container {
+      flex: 1;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+      background: white;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .content-frame-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--secondary-color), #d85717);
+      z-index: 10;
+    }
+
+    .content-frame-wrapper {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .content-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: white;
+    }
+
+    .content-controls {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      display: flex;
+      gap: 10px;
+      z-index: 100;
+    }
+
+    .content-btn {
+      background: var(--secondary-color);
+      border: none;
+      color: white;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 5px 15px rgba(93, 138, 127, 0.3);
+    }
+
+    .content-btn:hover {
+      background: var(--primary-color);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(93, 138, 127, 0.4);
+    }
+
+    /* ====== PANEL CÀI ĐẶT ====== */
+    .settings-panel {
+      position: fixed;
+      top: 70px;
+      right: 20px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+      padding: 20px;
+      width: 280px;
+      z-index: 1001;
+      display: none;
+      animation: slideDown 0.3s ease;
+    }
+
+    .settings-panel.active {
+      display: block;
+    }
+
+    .settings-panel h3 {
+      color: var(--primary-color);
+      margin-bottom: 15px;
+      text-align: center;
+      font-size: 1.2rem;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    .settings-panel h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 3px;
+      background: var(--accent-color);
+      border-radius: 3px;
+    }
+
+    .setting-group {
+      margin-bottom: 15px;
+    }
+
+    .setting-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+      color: var(--primary-color);
+    }
+
+    .setting-control {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-family: inherit;
+      background: white;
+      transition: var(--transition);
+    }
+
+    .setting-control:focus {
+      outline: none;
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 2px rgba(133, 176, 130, 0.2);
+    }
+
+    .color-preview {
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      cursor: pointer;
+    }
+
+    .color-input {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .action-btn {
+      background: var(--secondary-color);
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--transition);
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .action-btn:hover {
+      background: var(--primary-color);
+    }
+
+    /* ====== THANH DƯỚI CÙNG ====== */
+    .bottom-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background: rgba(249, 247, 240, 0.95);
+      backdrop-filter: blur(15px);
+      border-top: 1px solid rgba(93, 138, 127, 0.15);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+      color: var(--primary-color);
+    }
+
+    .nav-btn {
+      background: var(--secondary-color);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      background: var(--primary-color);
+      transform: translateY(-2px);
+    }
+
+    .nav-btn:disabled {
+      background: #7f8c8d;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    .progress-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      margin: 0 20px;
+    }
+
+    .progress-bar {
+      flex: 1;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 5px;
+      overflow: hidden;
+      margin-right: 15px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--secondary-color), #d85717);
+      width: 0%;
+      transition: width 0.3s;
+      border-radius: 5px;
+    }
+
+    .progress-percent {
+      font-weight: 600;
+      min-width: 40px;
+      text-align: center;
+    }
+
+    /* ====== OVERLAY ====== */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(5px);
+      z-index: 1001;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+    }
+
+    .overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 2rem;
+      color: white;
+      position: relative;
+    }
+
+    .logo::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      border-radius: 3px;
+    }
+
+    .logo i {
+      margin-right: 15px;
+      font-size: 2.2rem;
+      color: white;
+    }
+    
+
+
+    .special-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    overflow: hidden;
+}
+
+.floating-leaves {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 20 C70 10, 80 30, 70 50 C60 70, 30 70, 20 50 C10 30, 30 10, 50 20 Z' fill='none' stroke='%235D8A7F' stroke-width='0.5' opacity='0.1'/%3E%3C/svg%3E");
+    animation: floatLeaves 60s infinite linear;
+}
+
+.floating-circles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 20% 30%, rgba(64, 223, 47, 0.05) 0%, transparent 10%),
+        radial-gradient(circle at 80% 70%, rgba(225, 246, 32, 0.05) 0%, transparent 15%),
+        radial-gradient(circle at 40% 80%, rgba(240, 45, 23, 0.1) 0%, transparent 20%);
+}
+
+@keyframes floatLeaves {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    100% { transform: translate(-50px, -50px) rotate(360deg); }
+}
+
+
+
+  </style>
+</head>
+<body>
+  <div class="special-background">
+        <div class="floating-leaves"></div>
+        <div class="floating-circles"></div>
+    </div>
+    <div class="overlay" id="overlay"></div>
+  <div class="app-container">
+    <!-- Thanh công cụ trên cùng -->
+    <div class="topbar">
+      <div class="logo"><i class="fas fa-bed"></i>
+      <span class="book-title">Ngủ ít vẫn khỏe</span></div>     
+      <div class="toolbar">
+        <div class="tool-btn" id="toggleSidebar" title="Mục lục">
+          <i class="fas fa-book-open"></i>
+        </div>
+        <div class="tool-btn" id="settingsBtn" title="Cài đặt hiển thị">
+          <i class="fas fa-gear"></i>
+        </div>
+        <div class="tool-btn" id="fullscreenBtn" title="Toàn màn hình">
+          <i class="fas fa-expand"></i>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Sidebar mục lục -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h3><i class="fas fa-bookmark"></i><span style="margin-left: 13px;"> Mục lục</span></h3>
+        <button class="control-btn" id="closeSidebar">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="sidebar-content">
+        <ul>
+          <li class="special-chapter"><a target="contentFrame" href="P1. Trang xi nhê.html">TRANG TRÁCH NHIỆM</a></span></li>
+          <li class="special-chapter"><a target="contentFrame" href="P2. Về tác giả.html">VỀ TÁC GIẢ</a></li>
+          <li class="special-chapter">
+            <div class="caret-item">
+              <span class="caret"></span>
+              <a target="contentFrame" href="P3. Lời nói đầu/Lời nói đầu.html">LỜI NÓI ĐẦU</a>
+            </div>
+            <ul class="nested">
+              <li><a target="contentFrame" href="P3. Lời nói đầu/BỨC TRANH HOÀN CHỈNH.html">BỨC TRANH HOÀN CHỈNH VỀ HAI PHƯƠNG PHÁP ĐƯỢC ĐỀ CẬP TỚI TRONG CUỐN SÁCH NÀY</a></li>
+              <li><a target="contentFrame" href="P3. Lời nói đầu/PHƯƠNG PHÁP NGỦ NGON.html">"PHƯƠNG PHÁP NGỦ NGON TRONG 5 TIẾNG X THỨC DẬY LÚC 5 GIỜ SÁNG" SẼ THAY ĐỔI CUỐC SỐNG</a></li>
+              <li><a target="contentFrame" href="P3. Lời nói đầu/NẾU TĂNG CHẤT LƯỢNG.html">NẾU TĂNG CHẤT LƯỢNG GIẤC NGỦ. "THỜI GIAN NGỦ" SẼ NGẮN LẠI</a></li>
+              <li><a target="contentFrame" href="P3. Lời nói đầu/BƯỚC 1.html">BƯỚC 1: NÂNG CAO HIỆU QUẢ GIẤC NGỦ BẰNG KỸ THUẬT NGỦ NGAY LẬP TỨC - DẬY NGAY LẬP TỨC"</a></li>
+              <li><a target="contentFrame" href="P3. Lời nói đầu/BƯỚC 2.html">BƯỚC 2: NÂNG CAO "CHẤT LƯỢNG" GIẤC NGỦ, PHỤC HỒI TRIỆT ĐỂ NÃO BỘ VÀ CƠ THỂ</a></li>
+              <li><a target="contentFrame" href="P3. Lời nói đầu/BƯỚC 3.html">BƯỚC 3: ÁP DỤNG NĂM PHƯƠNG PHÁP "NGỦ TẠM THỜI" ĐỂ TỈNH TÁO SUỐT CẢ NGÀY</a></li>
+              <li><a target="contentFrame" href="P3. Lời nói đầu/BƯỚC 4.html">BƯỚC 4: TẠO THÓI QUEN "THỨC DẬY LÚC 5 GIỜ SÁNG" TRONG VÒNG 2 THÁNG</a></li>
+            </ul>
+          </li>
+         
+          <li class="special-chapter">
+            <div class="caret-item">
+              <span class="caret"></span>
+              <a target="contentFrame" href="P4. Dẫn nhập/P4. Dẫn nhập.html">DẪN NHẬP</a>
+            </div>
+            <ul class="nested">
+              <li><a target="contentFrame" href="P4. Dẫn nhập/RÚT NGẮN THỜI GIAN.html">RÚT NGẮN THỜI GIAN NGỦ, TẬN HƯỚNG MỖI NGÀY TRONG THẢNH THƠI VÀ THONG THẢ</a></li>
+              <li><a target="contentFrame" href="P4. Dẫn nhập/QUAN NIỆM SAI LỆCH.html">QUAN NIỆM SAI LỆCH "NGỦ NGẮN" = "KHÔNG TỐT CHO SỨC KHỎE"</a></li>
+            </ul>
+          </li>
+          <li class="special-chapter">
+            <div class="caret-only">
+              <span class="caret"></span>
+              <span style="padding-left: 15px;">BƯỚC 1: NÂNG CAO HIỆU QUẢ GIẤC NGỦ BẰNG KỸ THUẬT "NGỦ NGAY LẬP TỨC - DẬY NGAY LẬP TỨC"</span>
+            </div>
+            <ul class="nested">
+              <li><a target="contentFrame" href="P5. Bước 1/BẠN ĐANG TRẢI QUA.html">BẠN ĐANG TRẢI QUA QUÃNG THỜI GIAN LãNG PHÍ Ở "TRÊN GIƯỜNG", MỖI NGÀY 20 PHÚT</a></li>
+              <li><a target="contentFrame" href="P5. Bước 1/KỸ THUẬT NGỦ 1.html">KỸ THUẬT NGỦ NGAY LẬP TỨC 1</a></li>
+              <li><a target="contentFrame" href="P5. Bước 1/KỸ THUẬT NGỦ 2.html">KỸ THUẬT NGỦ NGAY LẬP TỨC 2: "BỐN LOẠI MÙI HƯƠNG" LÀ ĐỐI THỦ NẶNG KÝ CỦA THUỐC NGỦ</a></li>
+              <li><a target="contentFrame" href="P5. Bước 1/KỸ THUẬT NGỦ 3.html">KỸ THUẬT NGỦ NGAY LẬP TỨC 3: CHẤM DỨT TÌNH TRẠNG SUY NGHĨ KHI NẰM TRÊN GIƯỜNG BẰNG "CUỐN SỔ TAY CÁU GIẬN"</a></li>
+              <li><a target="contentFrame" href="P5. Bước 1/KỸ THUẬT NGỦ 4.html">KỸ THUẬT NGỦ NGAY LẬP TỨC 4: HIỆU QUẢ BẤT NGỜ CỦA "RỜI BỎ THỰC TẠI VÀ ĐI NGỦ" MÀ CHỈ NHỮNG NGƯỜI THÀNH CÔNG MỚI THỰC HIỆN ĐƯỢC</a></li>
+              <li><a target="contentFrame" href="P5. Bước 1/KỸ THUẬT NGỦ 5.html">KỸ THUẬT NGỦ NGAY LẬP TỨC 5: CÁCH CHUYỂN ĐỔI TỪ "DÂY THẦN KINH BAN NGÀY" SANG "DÂY THẦN KINH BUỔI TỐI"</a></li>
+              <li><a target="contentFrame" href="P5. Bước 1/KỸ THUẬT NGỦ 6.html">KỸ THUẬT NGỦ NGAY LẬP TỨC 6: TẠO RA "NGHI THỨC TRƯỚC KHI NGỦ" CỦA RIÊNG MÌNH</a></li>
+              <li><a target="contentFrame" href="P5. Bước 1/KỸ THUẬT NGỦ 7.html">KỸ THUẬT NGỦ NGAY LẬP TỨC 7: NGỪNG THỰC HIỆN "HÀNH ĐỘNG" CÓ TÁC DỤNG KHIẾN BẠN TỈNH TÁO BẰNG HAI CỐC CÀ PHÊ PHIN</a></li>
+              <li><a target="contentFrame" href="P5. Bước 1/KỸ THUẬT DẬY 1.html">KỸ THUẬT DẬY NGAY LẬP TỨC 1: "PHƯƠNG PHÁP ĐÁNH THỨC BẢN THÂN" KHIẾN BẠN TỈNH GIẤC TRONG LÝ TƯỞNG</a></li>
+              <li><a target="contentFrame" href="P5. Bước 1/KỸ THUẬT DẬY 2.html">KỸ THUẬT DẬY NGAY LẬP TỨC 2: THỨC GIẤC TRONG HẠNH PHÚC BẰNG CÁCH "NGỦ LẦN HAI TRONG 5 PHÚT"</a></li>
+              <li><a target="contentFrame" href="P5. Bước 1/KỸ THUẬT DẬY 3.html">KỸ THUẬT DẬY NGAY LẬP TỨC 3: THỨC GIẤC TRONG TỈNH TÁO HƠN NỮA BẰNG "TẬP THỂ DỤC VỚI KHỚP XƯƠNG BẤT ĐỘNG"</a></li>
+              <li><a target="contentFrame" href="P5. Bước 1/KỸ THUẬT DẬY 4.html">KỸ THUẬT DẬY NGAY LẬP TỨC 4: MẸO NHỎ ÉP BUỘC NÃO BỘ VÀ CƠ THỂ THỨC DẬY MỘT CÁCH HIỆU QUẢ VÀO BUỔI SÁNG NGÀY HÔM SAU CỦA TIỆC RƯỢU</a></li>
+              <li><a target="contentFrame" href="P5. Bước 1/TỔNG HỢP BƯỚC 1.html">TỔNG HỢP BƯỚC 1</a></li>
+            </ul>
+          </li>
+          <li class="special-chapter">
+            <div class="caret-only">
+              <span class="caret"></span>
+              <span style="padding-left: 15px;">BƯỚC 2: NÂNG CAO "CHẤT LƯỢNG" GIẤC NGỦ, PHỤC HỒI TRIỆT ĐỂ NÃO BỘ VÀ CƠ THỂ</span>
+            </div>
+            <ul class="nested">
+              <li><a target="contentFrame" href="P6. Bước 2/GIẤC NGỦ NGON.html">"GIẤC NGỦ NGON" TRONG 3 TIẾNG SẼ MANG ĐẾN MỘT BUỔI SÁNG "DỄ CHỊU VÀ SẢNG KHOÁI"</a></li>
+              <li><a target="contentFrame" href="P6. Bước 2/KỸ THUẬT NC 1.html">KỸ THUẬT NÂNG CAO CHẤT LƯỢNG GIẤC NGỦ 1: DÙ LÀ NGƯỜI LƯỜI BIẾNG CŨNG CÓ THỂ THỰC HIỆN TỐT - "THỰC PHẨM CHỨC NĂNG MA THUẬT"</a></li>
+              <li><a target="contentFrame" href="P6. Bước 2/KỸ THUẬT NC 2.html">KỸ THUẬT NÂNG CAO CHẤT LƯỢNG GIẤC NGỦ 2: BA "PHƯƠNG PHÁP HUẤN LUYỆN TỰ TRỊ" ĐỂ DÂY THẦN KINH GIAO CẢM PHỤ TRỞ NÊN ƯU VIỆT HƠN NỮA</a></li>
+              <li><a target="contentFrame" href="P6. Bước 2/KỸ THUẬT NC 3.html">KỸ THUẬT NÂNG CAO CHẤT LƯỢNG GIẤC NGỦ 3: TẠI SAO ĂN NGAY TRƯỚC KHI ĐI NGỦ LẠI KHIẾN CHẤT LƯỢNG GIẤC NGỦ BỊ GIẢM ĐI ĐÁNG KỂ?</a></li>
+              <li><a target="contentFrame" href="P6. Bước 2/KỸ THUẬT NC 4.html">KỸ THUẬT NÂNG CAO CHẤT LƯỢNG GIẤC NGỦ 4: GIẤC NGỦ NGON ĐƯỢC QUYẾT ĐỊNH BỞI GỐI VÀ CHĂN ĐỆM</a></li>
+              <li><a target="contentFrame" href="P6. Bước 2/KỸ THUẬT NC 5.html">KỸ THUẬT NÂNG CAO CHẤT LƯỢNG GIẤC NGỦ 5: CÁCH SỬ DỤNG GỐI VÀ CHĂN ĐỆM ĐỂ CÓ ĐƯỢC GIẤC NGỦ SÂU VÀ NGON HƠN NỮA</a></li>
+              <li><a target="contentFrame" href="P6. Bước 2/KỸ THUẬT NC 6.html">KỸ THUẬT NÂNG CAO CHẤT LƯỢNG GIẤC NGỦ 6: NHỮNG ẢNH HƯỞNG XẤU CỦA VIỆC UỐNG RƯỢU VÀ HÚT THUỐC TRƯỚC KHI NGỦ GÂY RA CHO GIẤC NGỦ</a></li>
+              <li><a target="contentFrame" href="P6. Bước 2/KỸ THUẬT NC 7.html">KỸ THUẬT NÂNG CAO CHẤT LƯỢNG GIẤC NGỦ 7: CỨ BẬT ĐIỀU HÒA MÃI? HAY LÀ HẸN GIỜ TẮT?</a></li>
+              <li><a target="contentFrame" href="P6. Bước 2/KỸ THUẬT NC 8.html">KỸ THUẬT NÂNG CAO CHẤT LƯỢNG GIẤC NGỦ 8: KHÔNG ĐƯỢC NGỦ TRONG KHI MẶC QUẦN ÁO BÌNH THƯỜNG</a></li>
+              <li><a target="contentFrame" href="P6. Bước 2/KỸ THUẬT NC 9.html">KỸ THUẬT NÂNG CAO CHẤT LƯỢNG GIẤC NGỦ 9: "KHOẢNG THỜI GIAN MA QUỶ" TUYỆT ĐỐI KHÔNG ĐƯỢC NGỦ</a></li>
+              <li><a target="contentFrame" href="P6. Bước 2/CĂN BỆNH.html">CĂN BỆNH ĐÁNG NGỜ VỀ GIẤC NGỦ KHI KHÔNG THỂ CẢI THIỆN DÙ ĐÃ THỰC HIỆN NHỮNG KỸ THUẬT TRÊN?</a></li>
+              <li><a target="contentFrame" href="P6. Bước 2/TỔNG HỢP 2.jpg">TỔNG HỢP BƯỚC 2</a></li>
+            </ul>
+          </li>
+          <li class="special-chapter">
+            <div class="caret-only">
+              <span class="caret"></span>
+              <span style="padding-left: 15px;">BƯỚC 3: ÁP DỤNG NĂM PHƯƠNG PHÁP "NGỦ TẠM THỜI" ĐỂ TỈNH TÁO SUỐT CẢ NGÀY</span>
+            </div>
+            <ul class="nested">
+              <li><a target="contentFrame" href="P7. Bước 3/CON NGƯỜI.html">CON NGƯỜI CÓ THỂ NGỦ VÀI LẦN TRONG MỘT NGÀY</a></li>
+              <li><a target="contentFrame" href="P7. Bước 3/LÝ DO.html">LÝ DO NHỮNG TẬP ĐOÀN HÀNG ĐẦU CỦA THẾ GIỚI ĐỂ TOÀN BỘ NHÂN VIÊN THỰC HIỆN "NGỦ TẠM THỜI"?</a></li>
+              <li><a target="contentFrame" href="P7. Bước 3/NGỦ TẠM THỜI 1.html">NGỦ TẠM THỜI NÂNG CAO HIỆU SUẤT HOẠT ĐỘNG TRONG SUỐT MỘT NGÀY 1: NANO NAP (NGỦ TẠM THỜI TRONG KHOẢNH KHẮC ~ VÀI GIÂY)</a></li>
+              <li><a target="contentFrame" href="P7. Bước 3/NGỦ TẠM THỜI 2.html">NGỦ TẠM THỜI NÂNG CAO HIỆU SUẤT HOẠT ĐỘNG TRONG SUỐT MỘT NGÀY 2: MICRO NAP (NGỦ TẠM THỜI KHOẢNG 1 PHÚT)</a></li>
+              <li><a target="contentFrame" href="P7. Bước 3/NGỦ TẠM THỜI 3.html">NGỦ TẠM THỜI NÂNG CAO HIỆU SUẤT HOẠT ĐỘNG TRONG SUỐT MỘT NGÀY 3: MINI NAP (NGỦ TẠM THỜI KHOẢNG 10 PHÚT)</a></li>
+              <li><a target="contentFrame" href="P7. Bước 3/NGỦ TẠM THỜI 4.html">NGỦ TẠM THỜI NÂNG CAO HIỆU SUẤT HOẠT ĐỘNG TRONG SUỐT MỘT NGÀY 4: POWER NAP (NGỦ TẠM THỜI 20 PHÚT)</a></li>
+              <li><a target="contentFrame" href="P7. Bước 3/NGỦ TẠM THỜI 5.html">NGỦ TẠM THỜI NÂNG CAO HIỆU SUẤT HOẠT ĐỘNG TRONG SUỐT MỘT NGÀY 5: HOLIDAY NAP (NGỦ TẠM THỜI TRONG NGÀY NGHỈ - 90 PHÚT)</a></li>
+              <li><a target="contentFrame" href="P7. Bước 3/MỘT YẾU TỐ.html">MỘT YẾU TỐ QUAN TRỌNG TRONG NGỦ TẠM THỜI, ĐÓ LÀ TỰ KỶ ÁM THỊ BẢN THÂN "ĐANG THƯ GIÃN"</a></li>
+              <li><a target="contentFrame" href="P7. Bước 3/KỸ THUẬT NGỦ TẠM THỜI.html">KỸ THUẬT NGỦ TẠM THỜI "PLUS &alpha;" KHIẾN NÃO BỘ MINH MẪN HƠN NỮA</a></li>
+              <li><a target="contentFrame" href="P7. Bước 3/7 HUYỆT ĐẠO.html">7 HUYỆT ĐẠO THỔI BAY CƠN BUỒN NGỦ TRONG KHOẢNH KHẮC</a></li>
+              <li><a target="contentFrame" href="P7. Bước 3/TỔNG HỢP 3.jpg">TỔNG HỢP BƯỚC 3</a></li>
+            </ul>
+          </li>
+          <li class="special-chapter">
+            <div class="caret-only">
+              <span class="caret"></span>
+              <span style="padding-left: 15px;"></span>BƯỚC 4: BIẾN "THỨC DẬY LÚC 5 GIỜ SÁNG" TRỞ THÀNH THÓI QUEN TRONG 2 THÁNG
+            </div>
+            <ul class="nested">
+              <li><a target="contentFrame" href="P8. Bước 4/CHỈ TRONG.html">CHỈ TRONG VÒNG 2 THÁNG, BẠN CŨNG CÓ THỂ TRỞ THÀNH NGƯỜI NGỦ NGẮN THỨC DẬY LÚC 5 GIỜ SÁNG</a></li>
+              <li><a target="contentFrame" href="P8. Bước 4/KIỂM TRA.html">KIỂM TRA LIỆU CÓ THỂ RÚT NGẮN MÀ KHÔNG GÂY QUÁ SỨC BẰNG "DANH SÁCH KIỂM TRA KHI THỨC DẬY"</a></li>
+              <li><a target="contentFrame" href="P8. Bước 4/CÓ THỂ.html">CÓ THỂ THẤT BẠI TỚI HAI LẦN TRONG MỘT TUẦN CŨNG KHÔNG SAO! NHƯNG THẤT BẠI LIÊN TIẾP LÀ KHÔNG TỐT!</a></li>
+              <li><a target="contentFrame" href="P8. Bước 4/QUẢN LÝ.html">QUẢN LÝ RÚT NGẮN GIẤC NGỦ TỪ HAI MẶT "THẦN KINH HỌC" VÀ "TÂM LÝ HỌC"</a></li>
+              <li><a target="contentFrame" href="P8. Bước 4/RÚT NGẮN.html">RÚT NGẮN THỜI GIAN NGỦ MỘT CÁCH CHẮC CHẮN VÀ THÚ VỊ HƠN NỮA BẰNG "TRÒ CHƠI DẬY SỚM"!</a></li>
+              <li><a target="contentFrame" href="P8. Bước 4/TỔNG HỢP 4.jpg">TỔNG HỢP BƯỚC 4</a></li>
+            </ul>
+          </li>
+          <li class="special-chapter"><a target="contentFrame" href="P9. Lời cuối.html">LỜI CUỐI</a></li>
+          <li class="special-chapter"><a target="contentFrame" href="Bìa 4.html">BÌA SAU</a></li>
+        </ul>
+      </div>
+    </aside>
+  <div class="special-background">
+        <div class="floating-leaves"></div>
+        <div class="floating-circles"></div>
+    </div>
+    <div class="overlay" id="overlay"></div>
+    <!-- Nội dung chính -->
+    <div class="content">
+      <div class="content-frame-container">
+        <div class="content-frame-wrapper">
+          <iframe src="Bìa 1.html" name="contentFrame" class="content-frame" id="contentFrame"></iframe>
+          <div class="content-controls">
+            <button class="content-btn" id="scrollToTop" title="Lên đầu trang">
+              <i class="fas fa-arrow-up"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Thanh dưới cùng -->
+    <div class="bottom-bar">
+      <button class="nav-btn" id="prevChapter">
+        <i class="fas fa-chevron-left"></i> Chương trước
+      </button>
+      
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-percent" id="progressPercent">0%</div>
+      </div>
+      
+      <button class="nav-btn" id="nextChapter">
+        Chương sau <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+
+    <!-- Panel cài đặt -->
+    <div class="settings-panel" id="settingsPanel">
+      <h3>Cài đặt hiển thị</h3>
+      
+      <div class="setting-group">
+        <label for="bgColor">Màu nền</label>
+        <div class="color-input">
+          <input type="color" id="bgColor" class="setting-control" value="#ffffff">
+          <div class="color-preview" id="bgColorPreview" style="background-color: #ffffff;"></div>
+        </div>
+      </div>
+      
+      <div class="setting-group">
+        <label for="fontFamily">Kiểu chữ</label>
+        <select id="fontFamily" class="setting-control">
+          <option value="Arial">Arial</option>
+          <option value="Georgia">Georgia</option>
+          <option value="'Times New Roman'" selected>Times New Roman</option>
+          <option value="'Segoe UI'">Segoe UI</option>
+          <option value="Verdana">Verdana</option>
+          <option value="'Courier New'">Courier New</option>
+        </select>
+      </div>
+      
+      <div class="setting-group">
+        <label for="fontSize">Cỡ chữ</label>
+        <input type="range" id="fontSize" class="setting-control" min="14" max="24" value="18" step="1">
+        <div id="fontSizeValue">18px</div>
+      </div>
+      
+      <!-- Bổ sung tính năng khoảng cách dòng -->
+      <div class="setting-group">
+        <label for="lineHeight">Khoảng cách dòng:</label>
+        <select id="lineHeight" class="setting-control">
+          <option value="1">1</option>
+          <option value="1.15" selected>1.2</option>
+          <option value="1.5">1.5</option>
+          <option value="2">2</option>
+          <option value="2.5">2.5</option>
+          <option value="3">3</option>
+        </select>
+      </div>
+
+      <div class="setting-group">
+        <label for="textColor">Màu chữ</label>
+        <div class="color-input">
+          <input type="color" id="textColor" class="setting-control" value="black">
+          <div class="color-preview" id="textColorPreview" style="background-color: black;"></div>
+        </div>
+      </div>
+      
+      <button class="action-btn" id="applySettings">Áp dụng</button>
+      <button class="action-btn" id="resetSettings" style="background: #95a5a6; margin-top: 5px;">Mặc định</button>
+    </div>
+  </div>
+
+  <script>
+    // ====== KHỞI TẠO BIẾN VÀ PHẦN TỬ DOM ======
+    const toggleSidebar = document.getElementById('toggleSidebar');
+    const closeSidebar = document.getElementById('closeSidebar');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    const settingsBtn = document.getElementById('settingsBtn');
+    const settingsPanel = document.getElementById('settingsPanel');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+    const contentFrame = document.getElementById('contentFrame');
+    const scrollToTop = document.getElementById('scrollToTop');
+    const prevChapter = document.getElementById('prevChapter');
+    const nextChapter = document.getElementById('nextChapter');
+    const progressFill = document.getElementById('progressFill');
+    const progressPercent = document.getElementById('progressPercent');
+    
+    // Các phần tử cài đặt
+    const bgColor = document.getElementById('bgColor');
+    const bgColorPreview = document.getElementById('bgColorPreview');
+    const fontFamily = document.getElementById('fontFamily');
+    const fontSize = document.getElementById('fontSize');
+    const fontSizeValue = document.getElementById('fontSizeValue');
+    const lineHeight = document.getElementById('lineHeight');
+    const textColor = document.getElementById('textColor');
+    const textColorPreview = document.getElementById('textColorPreview');
+    const applySettings = document.getElementById('applySettings');
+    const resetSettings = document.getElementById('resetSettings');
+
+    // ====== BIẾN TOÀN CỤC CHO ĐIỀU HƯỚNG VÀ CÀI ĐẶT ======
+    let currentChapterIndex = 0;
+    let allChapters = [];
+    let currentChapterFile = 'Bìa.html';
+    let scrollTrackingInterval = null;
+    
+    // Lưu cài đặt hiển thị
+    let displaySettings = {
+        bgColor: '#ffffff',
+        fontFamily: "'Times New Roman'",
+        fontSize: '18',
+        lineHeight: '1.15',
+        textColor: '#000000'
+    };
+
+    // ====== KHỞI TẠO CÀI ĐẶT ======
+    function initializeSettings() {
+        // Load cài đặt từ localStorage nếu có
+        const savedSettings = localStorage.getItem('bookDisplaySettings');
+        if (savedSettings) {
+            displaySettings = JSON.parse(savedSettings);
+            
+            // Áp dụng cài đặt đã lưu lên form
+            bgColor.value = displaySettings.bgColor;
+            bgColorPreview.style.backgroundColor = displaySettings.bgColor;
+            fontFamily.value = displaySettings.fontFamily;
+            fontSize.value = displaySettings.fontSize;
+            fontSizeValue.textContent = displaySettings.fontSize + 'px';
+            lineHeight.value = displaySettings.lineHeight;
+            textColor.value = displaySettings.textColor;
+            textColorPreview.style.backgroundColor = displaySettings.textColor;
+        }
+        
+        // Áp dụng cài đặt ngay khi khởi động
+        applyDisplaySettings();
+    }
+
+    // ====== SỰ KIỆN SIDEBAR ======
+    toggleSidebar.addEventListener('click', function() {
+        sidebar.classList.add('active');
+        overlay.classList.add('active');
+    });
+
+    closeSidebar.addEventListener('click', function() {
+        sidebar.classList.remove('active');
+        overlay.classList.remove('active');
+    });
+
+    overlay.addEventListener('click', function() {
+        sidebar.classList.remove('active');
+        overlay.classList.remove('active');
+    });
+
+    // ====== SỰ KIỆN MỞ/ĐÓNG PANEL CÀI ĐẶT ======
+    settingsBtn.addEventListener('click', function() {
+        settingsPanel.classList.toggle('active');
+    });
+    
+    document.addEventListener('click', function(event) {
+        if (!settingsBtn.contains(event.target) && !settingsPanel.contains(event.target)) {
+            settingsPanel.classList.remove('active');
+        }
+    });
+
+    // ====== CÀI ĐẶT HIỂN THỊ ======
+    fontSize.addEventListener('input', function() {
+        fontSizeValue.textContent = `${this.value}px`;
+    });
+    
+    bgColor.addEventListener('input', function() {
+        bgColorPreview.style.backgroundColor = this.value;
+    });
+    
+    textColor.addEventListener('input', function() {
+        textColorPreview.style.backgroundColor = this.value;
+    });
+    
+    applySettings.addEventListener('click', function() {
+        // Lưu cài đặt mới
+        displaySettings = {
+            bgColor: bgColor.value,
+            fontFamily: fontFamily.value,
+            fontSize: fontSize.value,
+            lineHeight: lineHeight.value,
+            textColor: textColor.value
+        };
+        
+        // Lưu vào localStorage
+        localStorage.setItem('bookDisplaySettings', JSON.stringify(displaySettings));
+        
+        // Áp dụng cài đặt
+        applyDisplaySettings();
+    });
+    
+    resetSettings.addEventListener('click', function() {
+        resetDisplaySettings();
+    });
+    
+    function applyDisplaySettings() {
+        try {
+            const iframeDoc = contentFrame.contentDocument || contentFrame.contentWindow.document;
+            const css = `
+                body {
+                    font-family: ${displaySettings.fontFamily} !important;
+                    font-size: ${displaySettings.fontSize}px !important;
+                    line-height: ${displaySettings.lineHeight} !important;
+                    color: ${displaySettings.textColor} !important;
+                    background-color: ${displaySettings.bgColor} !important;
+                    transition: all 0.3s ease;
+                }
+                
+                p, div, span {
+                    line-height: ${displaySettings.lineHeight} !important;
+                }
+            `;
+            
+            let style = iframeDoc.getElementById('custom-styles');
+            if (!style) {
+                style = iframeDoc.createElement('style');
+                style.id = 'custom-styles';
+                iframeDoc.head.appendChild(style);
+            }
+            style.textContent = css;
+            
+            // Cũng áp dụng màu nền cho trang chính
+            document.body.style.backgroundColor = displaySettings.bgColor;
+            
+            // Hiệu ứng xác nhận
+            settingsBtn.style.animation = 'pulse 0.5s';
+            setTimeout(() => {
+                settingsBtn.style.animation = '';
+            }, 500);
+            
+        } catch (error) {
+            console.warn('Không thể áp dụng cài đặt cho iframe:', error);
+        }
+    }
+    
+    function resetDisplaySettings() {
+        // Reset về mặc định
+        displaySettings = {
+            bgColor: '#ffffff',
+            fontFamily: "'Times New Roman'",
+            fontSize: '18',
+            lineHeight: '1.15',
+            textColor: '#000000'
+        };
+        
+        // Cập nhật form
+        bgColor.value = displaySettings.bgColor;
+        bgColorPreview.style.backgroundColor = displaySettings.bgColor;
+        fontFamily.value = displaySettings.fontFamily;
+        fontSize.value = displaySettings.fontSize;
+        fontSizeValue.textContent = displaySettings.fontSize + 'px';
+        lineHeight.value = displaySettings.lineHeight;
+        textColor.value = displaySettings.textColor;
+        textColorPreview.style.backgroundColor = displaySettings.textColor;
+        
+        // Xóa cài đặt đã lưu
+        localStorage.removeItem('bookDisplaySettings');
+        
+        // Áp dụng reset
+        applyDisplaySettings();
+    }
+
+    // ====== TOÀN MÀN HÌNH ======
+    fullscreenBtn.addEventListener('click', toggleFullscreen);
+    
+    function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.webkitRequestFullscreen) {
+                document.documentElement.webkitRequestFullscreen();
+            } else if (document.documentElement.msRequestFullscreen) {
+                document.documentElement.msRequestFullscreen();
+            }
+            fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+            fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+        }
+    }
+    
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('msfullscreenchange', handleFullscreenChange);
+    
+    function handleFullscreenChange() {
+        if (!document.fullscreenElement && 
+            !document.webkitFullscreenElement && 
+            !document.msFullscreenElement) {
+            fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+        }
+    }
+
+    // ====== SCROLL TO TOP ======
+    function scrollToTopHandler() {
+        try {
+            const iframeWindow = contentFrame.contentWindow;
+            iframeWindow.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        } catch (error) {
+            console.warn('Không thể cuộn lên đầu trang:', error);
+        }
+    }
+
+    scrollToTop.addEventListener('click', scrollToTopHandler);
+
+    // ====== THU THẬP TẤT CẢ CÁC CHƯƠNG TỪ MỤC LỤC ======
+    function collectAllChapters() {
+    const links = sidebar.querySelectorAll('a[href]');
+    allChapters = Array.from(links).map(link => {
+        let href = link.getAttribute('href');
+        return href;
+    });
+    
+    // QUAN TRỌNG: Set currentChapterIndex thành 0 (ứng với P1. Trang xi nhê.html)
+    // nhưng vẫn giữ currentChapterFile là Bìa.html để hiển thị
+    currentChapterIndex = 0; // Luôn bắt đầu từ chương đầu tiên trong mục lục
+    
+    updateNavigationButtons();
+}
+
+    // ====== ĐIỀU HƯỚNG CHƯƠNG ======
+    function navigateToChapter(direction) {
+    if (direction === 'prev') {
+        if (currentChapterIndex === 0) {
+            // Nếu đang ở chương đầu tiên mà nhấn "Chương trước", quay về Bìa.html
+            contentFrame.src = 'Bìa.html';
+            currentChapterFile = 'Bìa.html';
+            prevChapter.disabled = true;
+            return;
+        } else {
+            currentChapterIndex--;
+        }
+    } else if (direction === 'next') {
+        if (currentChapterFile === 'Bìa.html') {
+            // Nếu đang ở Bìa.html mà nhấn "Chương sau", chuyển đến chương đầu tiên
+            currentChapterIndex = 0;
+        } else if (currentChapterIndex < allChapters.length - 1) {
+            currentChapterIndex++;
+        } else {
+            return;
+        }
+    } else {
+        return;
+    }
+    
+    // Load chapter mới
+    currentChapterFile = allChapters[currentChapterIndex];
+    contentFrame.src = currentChapterFile;
+    
+    updateNavigationButtons();
+    resetProgress();
+    stopProgressTracking();
+}
+    function updateNavigationButtons() {
+    if (currentChapterFile === 'Bìa.html') {
+        prevChapter.disabled = true;
+        nextChapter.disabled = false;
+    } else {
+        prevChapter.disabled = currentChapterIndex <= 0;
+        nextChapter.disabled = currentChapterIndex >= allChapters.length - 1;
+    }
+}
+
+    prevChapter.addEventListener('click', function() {
+        navigateToChapter('prev');
+    });
+
+    nextChapter.addEventListener('click', function() {
+        navigateToChapter('next');
+    });
+
+    // ====== CẬP NHẬT TIẾN ĐỘ ======
+    function updateProgressBar() {
+        try {
+            const iframe = document.getElementById('contentFrame');
+            if (!iframe) return;
+            
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            if (!iframeDoc || !iframeDoc.documentElement) return;
+            
+            const iframeBody = iframeDoc.body;
+            const iframeHtml = iframeDoc.documentElement;
+            
+            // Tính toán chiều cao có thể cuộn
+            const scrollTop = iframeBody.scrollTop || iframeHtml.scrollTop;
+            const scrollHeight = iframeBody.scrollHeight || iframeHtml.scrollHeight;
+            const clientHeight = iframeBody.clientHeight || iframeHtml.clientHeight;
+            
+            // Kiểm tra xem nội dung có thể cuộn được không
+            const canScroll = scrollHeight > clientHeight;
+            
+            let scrollPercentage;
+            
+            if (!canScroll) {
+                // Nếu không thể cuộn (nội dung ngắn), hiển thị 100% vì người dùng đã xem hết nội dung
+                scrollPercentage = 100;
+            } else {
+                // Tính phần trăm nội dung đã đọc
+                scrollPercentage = (scrollTop / (scrollHeight - clientHeight)) * 100;
+            }
+            
+            // GIỚI HẠN TỐI ĐA 100% - FIX LỖI 101%, 102%
+            scrollPercentage = Math.min(100, Math.max(0, scrollPercentage));
+            
+            // Cập nhật thanh tiến độ và phần trăm
+            const roundedPercentage = Math.round(scrollPercentage);
+            progressFill.style.width = `${scrollPercentage}%`;
+            progressPercent.textContent = `${roundedPercentage}%`;
+            
+        } catch (error) {
+            console.warn('Không thể cập nhật thanh tiến độ:', error);
+        }
+    }
+
+    // ====== HÀM BẮT ĐẦU THEO DÕI CUỘN ======
+    function setupProgressTracking() {
+        // Dừng interval cũ nếu có
+        if (scrollTrackingInterval) {
+            clearInterval(scrollTrackingInterval);
+        }
+        
+        // Thiết lập interval để theo dõi cuộn
+        scrollTrackingInterval = setInterval(updateProgressBar, 100);
+    }
+
+    // ====== HÀM DỪNG THEO DÕI CUỘN ======
+    function stopProgressTracking() {
+        if (scrollTrackingInterval) {
+            clearInterval(scrollTrackingInterval);
+            scrollTrackingInterval = null;
+        }
+    }
+
+    // ====== HÀM RESET TIẾN ĐỘ ======
+    function resetProgress() {
+        progressFill.style.width = '0%';
+        progressPercent.textContent = '0%';
+    }
+
+    // ====== MỤC LỤC TƯƠNG TÁC - FIX HOÀN TOÀN ======
+    function setupSidebarToggle() {
+        // Loại 1: Các mục chỉ có caret (BƯỚC 1,2,3,4)
+        const caretOnly = document.getElementsByClassName("caret-only");
+        for (let i = 0; i < caretOnly.length; i++) {
+            caretOnly[i].addEventListener("click", function() {
+                const caret = this.querySelector('.caret');
+                const nested = this.nextElementSibling;
+                
+                if (nested && nested.classList.contains('nested')) {
+                    nested.classList.toggle("active");
+                    caret.classList.toggle("caret-down");
+                }
+            });
+        }
+     
+        // Loại 2: Các mục vừa có caret vừa có link (LỜI NÓI ĐẦU, DẪN NHẬP)
+        const caretItems = document.querySelectorAll(".caret-item");
+        for (let i = 0; i < caretItems.length; i++) {
+            caretItems[i].addEventListener("click", function(e) {
+                // Chỉ xử lý khi click vào caret hoặc phần tử cha, không phải link
+                if (e.target.tagName === 'A') {
+                    return;
+                }
+               
+                const caret = this.querySelector('.caret');
+                const nested = this.nextElementSibling;
+                
+                if (nested && nested.classList.contains('nested')) {
+                    nested.classList.toggle("active");
+                    caret.classList.toggle("caret-down");
+                }
+            });
+        }
+        
+        // Thêm sự kiện click cho tất cả các link trong sidebar
+const sidebarLinks = sidebar.querySelectorAll('a[href]');
+sidebarLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+        currentChapterFile = this.getAttribute('href');
+        currentChapterIndex = allChapters.indexOf(currentChapterFile);
+        
+        contentFrame.src = currentChapterFile;
+        
+        // Đóng sidebar
+        sidebar.classList.remove('active');
+        overlay.classList.remove('active');
+        
+        // Cập nhật trạng thái nút điều hướng
+        updateNavigationButtons();
+        
+        // Reset thanh tiến độ
+        resetProgress();
+        
+        // Dừng tracking cũ
+        stopProgressTracking();
+    });
+});
+    }
+
+    // ====== XỬ LÝ KHI IFRAME LOAD - QUAN TRỌNG: TỰ ĐỘNG ÁP DỤNG CÀI ĐẶT ======
+    contentFrame.addEventListener('load', function() {
+        console.log('Iframe loaded: ' + contentFrame.src);
+        
+        // Tự động áp dụng cài đặt hiển thị khi iframe load xong
+        setTimeout(() => {
+            applyDisplaySettings();
+        }, 100);
+        
+        // Bắt đầu theo dõi tiến độ
+        setTimeout(() => {
+            setupProgressTracking();
+        }, 500);
+    });
+
+    // ====== KHỞI TẠO SỰ KIỆN ======
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('Ứng dụng đã được khởi tạo thành công!');
+        
+        // Khởi tạo cài đặt
+        initializeSettings();
+        
+        // Thiết lập mục lục và chương
+        setupSidebarToggle();
+        collectAllChapters();
+        
+        // Bắt đầu theo dõi tiến độ cho trang đầu tiên
+        setTimeout(() => {
+            setupProgressTracking();
+        }, 1000);
+    });
+</script>
+</body>
+</html>

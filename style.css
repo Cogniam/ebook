@@ -1,0 +1,91 @@
+body {
+  margin: 0;
+}
+p {
+  margin-top: 0px;
+  margin-bottom: 10px;
+  margin-left: 20;
+  margin-right: 20;
+  text-indent: 40px;
+  text-align: justify;
+  padding: 3.2px;
+  /*font-size: 18px;
+  font-family: 'Times New Roman', Times, serif;*/
+}
+a {
+  text-decoration: none;
+  color: #ed2828;
+  font-weight: bold;
+}
+
+h1 {
+  text-align: center;
+    margin: 30px 20 30px 20;
+    background: linear-gradient(135deg, #a62323, #e15151, #e77474);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    position: relative;
+    padding-bottom: 20px;
+    font-size: 40px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+h1::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 5px;
+    background: linear-gradient(90deg, transparent, #e15151, transparent);
+    border-radius: 10px;
+}
+.spacing {
+    display: block;
+    margin-top: 13px;
+}
+
+h2 {
+  font-family:'Courier New', Courier, monospace;
+  font-size: 23px;
+  font-weight: normal;
+  display: block;
+  margin: 30px 24 10 25;
+  text-align: left;
+  padding: 15px 0 15px 25px;
+  border-left: 6px solid #e17055;
+  color: rgb(112, 112, 133);
+  font-weight: 600;
+  position: relative;
+  transition: all 0.3s ease;
+  background: linear-gradient(to right, transparent 0%, #fbf4f2 0%, #ffffff 100%);
+}
+h3 {
+  font-weight: bold;
+  text-indent: 40px;
+  text-align:justify;
+  margin-top:12px;
+  margin-bottom:12px;
+  margin-left: 20;
+  margin-right: 20;
+  /*font-size: 18px;
+  font-family: 'Times New Roman', Times, serif;*/
+}
+ul {
+    margin-top: 0px;
+    margin-bottom: 10px;
+    margin-left: 50px;
+    margin-right: 20;
+    text-align: justify;
+}
+li {
+    margin: 0px 0 10;  /* khoảng cách giữa các dòng */
+}
+img {
+    display: block; 
+    text-align: center;
+	  text-indent: 0;
+    margin: 1em auto;
+	  width: 70%;
+}
